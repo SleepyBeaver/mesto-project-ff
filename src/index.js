@@ -1,4 +1,5 @@
-import { initialCards, createCardElement, cardList, removeCard, setLike } from './components/card.js';
+import { initialCards } from './components/data.js';
+import { createCardElement, removeCard, setLike } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
 import './pages/index.css';
 
@@ -6,6 +7,7 @@ const profileInfo = document.querySelector('.profile__info');
 const profileTitle = profileInfo.querySelector('.profile__title');
 const profileDescription = profileInfo.querySelector('.profile__description');
 const profileEditButton = profileInfo.querySelector('.profile__edit-button');
+export const cardList = document.querySelector('.places__list');
 
 const popupTypeEdit = document.querySelector('.popup_type_edit');
 const popupTypeNewCard = document.querySelector('.popup_type_new-card');
