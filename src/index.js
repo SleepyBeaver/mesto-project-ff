@@ -1,6 +1,7 @@
 import { initialCards } from './components/data.js';
 import { createCardElement, removeCard, setLike } from './components/card.js';
 import { closeModal, openModal } from './components/modal.js';
+import { clearValidation, enableValidation } from './components/validation.js';
 import './pages/index.css';
 
 const profileInfo = document.querySelector('.profile__info');
@@ -30,11 +31,14 @@ const popupCaption = popupTypeImage.querySelector('.popup__caption');
 profileEditButton.addEventListener('click', () => {
     inputTypeName.value = profileTitle.textContent;
 	inputTypeDescription.value = profileDescription.textContent;
+	clearValidation(popupEditProfileForm, dataValidation);
 	openModal(popupTypeEdit);
 })
 
 profileAddButton.addEventListener('click', () => {
-	openModal(popupTypeNewCard)
+	popupNewCardForm.reset();
+	clearValidation(popupNewCardForm, dataValidation);
+	openModal(popupTypeNewCard);
 })
 
 popupEditProfileForm.addEventListener('submit', handleProfileSubmit);
@@ -92,3 +96,14 @@ function addCard(cardElement, cardPosition) {
 		cardList.append(createCardElement(cardElement, removeCard, setLike, openPopupImage));
 	}
 }
+
+const dataValidation = {
+	formSelector: '.popup__form',
+	inputSelector: '.popup__input',
+	submitButtonSelector: '.popup__button',
+	inactiveButtonClass: 'popup__button_disabled',
+	inputErrorClass: 'popup__input_type_error',
+	errorClass: 'popup__error_visible'
+  };
+
+enableValidation(dataValidation);
