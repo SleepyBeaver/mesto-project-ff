@@ -71,6 +71,7 @@ export function openPopupImage(cardImageSrc, cardImageAlt) {
 
 function handleProfileSubmit(evt) {
 	evt.preventDefault();
+	renderLoading(true, popupTypeEdit);
 
 	const nameInput = inputTypeName.value;
 	const jobInput = inputTypeDescription.value;
@@ -89,13 +90,14 @@ function handleProfileSubmit(evt) {
 
 function handleAddCardSubmit(evt) {
 	evt.preventDefault();
+	renderLoading(true, popupNewCardForm);
 
 	const cardName = inputTypeCardName.value;
 	const imageUrl = inputTypeUrl.value;
 
 	addNewCard(cardName, imageUrl)
 		.then(card => {
-			const newCard = createCardElement(card._id, cardName, imageUrl, deleteCard, card.likes, setLike, openPopupImage, card.owner._id, currentUserId);
+			const newCard = createCardElement(card._id, card.name, card.link, deleteCard, card.likes, setLike, openPopupImage, card.owner._id, currentUserId);
 			addCard(newCard, true);
 			popupNewCardForm.reset();
 			closeModal(popupTypeNewCard);
@@ -132,7 +134,7 @@ function handleEditAvatarSubmit(evt) {
 
 Promise.all([fetchUserData(), fetchInitialCards()])
 	.then(([userData, initialCards]) => {
-		const currentUserId = userData._id;
+		currentUserId = userData._id;
 		profileTitle.textContent = userData.name;
 		profileDescription.textContent = userData.about;
 		profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
@@ -146,6 +148,7 @@ Promise.all([fetchUserData(), fetchInitialCards()])
 
 const renderLoading = (isLoading, formElement) => {
 	const buttonElement = formElement.querySelector('.popup__button');
+	
 	if (isLoading) {
 		buttonElement.setAttribute('data-text', buttonElement.textContent);
 		buttonElement.textContent = 'Сохранение...';
