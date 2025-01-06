@@ -97,7 +97,7 @@ function handleAddCardSubmit(evt) {
 
 	addNewCard(cardName, imageUrl)
 		.then(card => {
-			const newCard = createCardElement(card._id, card.name, card.link, deleteCard, card.likes, setLike, openPopupImage, card.owner._id, currentUserId);
+			const newCard = createCardElement(card, deleteCard, setLike, openPopupImage, currentUserId);
 			addCard(newCard, true);
 			popupNewCardForm.reset();
 			closeModal(popupTypeNewCard);
@@ -140,7 +140,7 @@ Promise.all([fetchUserData(), fetchInitialCards()])
 		profileAvatar.style.backgroundImage = `url(${userData.avatar})`;
 
 		initialCards.forEach(card => {
-			const newCard = createCardElement(card._id, card.name, card.link, deleteCard, card.likes, setLike, openPopupImage, card.owner._id, currentUserId);
+			const newCard = createCardElement(card, deleteCard, setLike, openPopupImage, currentUserId);
 			addCard(newCard);
 		})
 	})

@@ -21,7 +21,7 @@ export function setLike(likeButton, cardId, likesCount) {
 		.catch(err => console.log(err))
 }
 
-export function createCardElement(cardId, cardName, cardImageLink, deleteCard, likes, setLike, openPopupImage, ownerId, userId) {
+export function createCardElement(cardData, deleteCard, setLike, openPopupImage, userId) {
 	const cardTemplate = document.querySelector('#card-template').content.querySelector('.places__item');
 	const card = cardTemplate.cloneNode(true);
 
@@ -31,23 +31,23 @@ export function createCardElement(cardId, cardName, cardImageLink, deleteCard, l
 	const cardElementImage = card.querySelector('.card__image');
 	const likeButton = card.querySelector('.card__like-button');
 	const likesCount = card.querySelector('.card__like-count');
-	likesCount.textContent = likes.length;
+	likesCount.textContent = cardData.likes.length;
 
-	cardTitle.textContent = cardName;
-	cardImage.src = cardImageLink;
-	cardImage.alt = cardName;
+	cardTitle.textContent = cardData.name;
+	cardImage.src = cardData.link;
+	cardImage.alt = cardData.name;
 
 	deleteButton.addEventListener('click', () => deleteCard(card));
 
 	cardElementImage.addEventListener('click', () => {
-			openPopupImage(cardImageLink, cardName);
+			openPopupImage(cardData.link, cardData.name);
 		})
 
 	likeButton.addEventListener('click', () => {
-			setLike(likeButton, cardId, likesCount);
+			setLike(likeButton, cardData._id, likesCount);
 		})
 
-	const userHasLiked = likes.some(like => like._id === userId);
+	const userHasLiked = cardData.likes.some(like => like._id === userId);
 	if (userHasLiked) {
 			likeButton.classList.add('card__like-button_is-active');
 	}
@@ -55,13 +55,13 @@ export function createCardElement(cardId, cardName, cardImageLink, deleteCard, l
 	//console.log('Owner ID:', ownerId);
 	//console.log('User ID:', userId);
 
-	if (ownerId !== userId) {
+	if (cardData.owner._id !== userId) {
 		//console.log('Removing delete button');
 		deleteButton.remove();
 	} else {
 		//console.log('Adding delete button event listener');
 		deleteButton.addEventListener('click', () => {
-			deleteCard(card, cardId)
+			deleteCard(card, cardData._id)
 		})
 	}
 
